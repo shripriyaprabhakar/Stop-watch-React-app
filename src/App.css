@@ -1,0 +1,64 @@
+.screen {
+  text-align: center;
+  width: 400px;
+  padding: 50px;
+
+  margin: auto;
+  background-color: black;
+  color: white;
+  height: 100vh;
+}
+
+.text-screen {
+  font-size: 80px;
+}
+
+.btns {
+  display: inline-block;
+  color: #0099cc;
+  background: transparent;
+  border: 2px solid #0099cc;
+  border-radius: 50%;
+  padding: 8px 16px;
+  text-align: center;
+  font-size: 16px;
+  margin-top: 14px;
+  margin: 30px;
+  cursor: pointer;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.btn-1 {
+  float: left;
+}
+
+.btn-2 {
+  float: right;
+}
+
+.btn-1:hover {
+  background-color: #008cba;
+  color: white;
+}
+
+.btn-2:hover {
+  background-color: #008cba;
+  color: white;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border-spacing: 0 15px;
+}
+
+tr {
+  border-bottom: 1px solid #ccc;
+}
+
+th,
+td {
+  text-align: left;
+  width: 100px;
+}
