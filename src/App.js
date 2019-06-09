@@ -8,91 +8,76 @@ class App extends Component {
     this.state = {
       min: 0,
       sec: 0,
-      milli: 0,
-      text: "Start",
-      counter: 0
+      centiSec: 0,
+      startText: "Start",
+      lapText: "lap",
+      lapCounter: 1
     };
   }
 
   fastTick = () => {
-    this.setState({ milli: this.state.milli + 1 });
-    if (this.state.milli === 100) {
-      this.setState({ milli: 0 });
+    this.setState({
+      centiSec: this.state.centiSec + 1
+    });
+    if (this.state.centiSec === 100) {
+      this.setState({ centiSec: 0, sec: this.state.sec + 1 });
     }
-  };
-  secTick = () => {
-    this.setState({ sec: this.state.sec + 1 });
     if (this.state.sec === 60) {
-      this.setState({ sec: 0 }, { min: this.state.min + 1 });
-    }
-  };
-
-  startTimer = e => {
-    if (e.target.value === "Start") {
-      // var newText = this.state.text === "Start" ? "Reset" : "Start";
-      this.setState({ text: "Reset" });
-      this.fastTickCounter = setInterval(() => {
-        this.fastTick();
-      }, 1 / 100);
-      this.secTickCounter = setInterval(() => {
-        this.secTick();
-      }, 1000);
-    } else if (e.target.value === "Reset") {
-      this.stopTimer();
-      this.setState({ min: 0, sec: 0, milli: 0, text: "Start" });
+      this.setState({ min: this.state.min + 1, sec: 0 });
     }
   };
 
   stopTimer = () => {
     clearInterval(this.fastTickCounter);
-    clearInterval(this.secTickCounter);
-    return (
-      <div className="screen">
-        {this.state.min} : {this.state.sec} : {this.state.milli}
-      </div>
-    );
+  };
+
+  startTimer = e => {
+    e.preventDefault();
+    if (e.target.value === "Start") {
+      this.setState({ startText: "Stop" });
+      this.fastTickCounter = setInterval(() => {
+        this.fastTick();
+      }, 10);
+    } else if (e.target.value === "Stop") {
+      this.setState({ startText: "Start" });
+      this.setState({ lapText: "Reset" });
+      this.stopTimer();
+    }
+  };
+
+  resetTime = e => {
+    if (e.target.value === "Reset") {
+      this.setState({ lapText: "lap", centiSec: 0, sec: 0, min: 0 });
+    }
   };
 
   render() {
     return (
-      <div className="screen">
-        <div className="text-screen">
-          {this.state.min} : {this.state.sec} : {this.state.milli}
+      <div className="wrapper">
+        <h1>Stop Watch</h1>
+        <div className="screen">
+          {this.state.min}: {this.state.sec} : {this.state.centiSec}
+          <div className="btn-group">
+            <button value={this.state.lapText} onClick={this.resetTime}>
+              {this.state.lapText}
+            </button>
+            <button value={this.state.startText} onClick={this.startTimer}>
+              {this.state.startText}
+            </button>
+          </div>
+          <div>
+            <table>
+              <tbody>
+                <tr>
+                  <td>lap {this.state.lapCounter}</td>
+                  <td>
+                    {this.state.min}: {this.state.sec} : {this.state.centiSec}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <section>
-          <button
-            className="btns btn-1"
-            value={this.state.text}
-            onClick={this.startTimer}
-          >
-            {this.state.text}
-          </button>
-          <button className="btns btn-2" onClick={this.stopTimer}>
-            Stop
-          </button>
-        </section>
-        <section>
-          <table>
-            <tbody>
-              <tr>
-                <td>lap</td>
-                <td>1min</td>
-              </tr>
-              <tr>
-                <td>lap</td>
-                <td>1min</td>
-              </tr>
-              <tr>
-                <td>lap</td>
-                <td>1min</td>
-              </tr>
-              <tr>
-                <td>lap</td>
-                <td>1min</td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
       </div>
     );
   }
